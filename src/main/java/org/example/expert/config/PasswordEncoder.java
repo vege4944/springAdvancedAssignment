@@ -10,7 +10,7 @@ public class PasswordEncoder {
         return BCrypt.withDefaults().hashToString(BCrypt.MIN_COST, rawPassword.toCharArray());
     }
 
-    public boolean matches(String rawPassword, String encodedPassword) {
+    public boolean matches(String encodedPassword, String rawPassword) {
         BCrypt.Result result = BCrypt.verifyer().verify(rawPassword.toCharArray(), encodedPassword);
         return result.verified;
     }

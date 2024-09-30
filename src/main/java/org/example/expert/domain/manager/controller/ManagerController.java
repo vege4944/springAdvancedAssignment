@@ -38,12 +38,11 @@ public class ManagerController {
 
     @DeleteMapping("/todos/{todoId}/managers/{managerId}")
     public void deleteManager(
-            @RequestHeader("Authorization") String bearerToken,
+            @Auth AuthUser authUser,
             @PathVariable long todoId,
             @PathVariable long managerId
     ) {
-        Claims claims = jwtUtil.extractClaims(bearerToken.substring(7));
-        long userId = Long.parseLong(claims.getSubject());
-        managerService.deleteManager(userId, todoId, managerId);
+        managerService.deleteManager(authUser, todoId, managerId);
     }
+    // 위에 authUser 가 있으니까 authUser 사용하면됨. 서비스단도 바꿔주기
 }

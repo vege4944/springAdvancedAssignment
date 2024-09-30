@@ -24,12 +24,8 @@ public class UserService {
     }
 
     @Transactional
-    public void changePassword(long userId, UserChangePasswordRequest userChangePasswordRequest) {
-        if (userChangePasswordRequest.getNewPassword().length() < 8 ||
-                !userChangePasswordRequest.getNewPassword().matches(".*\\d.*") ||
-                !userChangePasswordRequest.getNewPassword().matches(".*[A-Z].*")) {
-            throw new InvalidRequestException("새 비밀번호는 8자 이상이어야 하고, 숫자와 대문자를 포함해야 합니다.");
-        }
+    public void changePassword(long userId, UserChangePasswordRequest userChangePasswordRequest) { // 요청 처리 메서드
+        validateNewPassword(userChangePasswordRequest.getNewPassword());
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new InvalidRequestException("User not found"));
@@ -44,4 +40,13 @@ public class UserService {
 
         user.changePassword(passwordEncoder.encode(userChangePasswordRequest.getNewPassword()));
     }
+
+    private void validateNewPassword(String newPassword){ // 비밀번호 검증 메서드
+        if (newPassword.length() < 8 ||
+                !newPassword.matches(".*\\d.*") ||
+                !newPassword.matches(".*[A-Z].*")) {
+            throw new InvalidRequestException("새 비밀번호는 8자 이상이어야 하고, 숫자와 대문자를 포함해야 합니다.");
+        }
+    }
+    // validateNewPassword 라고 매서드를 분리해서 해당 메서드가 정확히 어떤일을 하는지 명확하게 이해가 쉬워짐
 }

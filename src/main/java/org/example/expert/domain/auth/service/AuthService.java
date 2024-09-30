@@ -29,7 +29,7 @@ public class AuthService {
 
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
             throw new InvalidRequestException("이미 존재하는 이메일입니다.");
-        }
+        } // 순서를 잘 정리해서 불필요한 로직이 실행되지 않게끔 정리하기 위함
 
         String encodedPassword = passwordEncoder.encode(signupRequest.getPassword());
 
